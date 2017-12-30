@@ -1,2 +1,144 @@
-Hello World!
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Basic Page Needs
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<meta charset="utf-8">
+<title>Telstra Feature Codes</title>
+<meta name="description" content="telstra feature codes">
+<meta name="author" content="Martin Mulins">
 
+<!-- Mobile Specific Metas
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- FONT
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<!--<link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">-->
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+<!-- CSS
+–––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<link rel="stylesheet" href="https://cdn.rawgit.com/dhg/Skeleton/88f03612/css/normalize.css">
+<link rel="stylesheet" href="https://cdn.rawgit.com/dhg/Skeleton/88f03612/css/skeleton.css">
+<script src="https://use.fontawesome.com/c37f76a768.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/typeahead.jquery.js"></script>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container centered">
+  <div class="row">
+    <div class="twelve columns">
+      <label for="typeLbl">Use MessageBank or Alternative</label>
+      <select class="u-full-width"  placeholder="Start Here" id="forwardToCbx">
+          <option value="0418707111">Message To Text</option>
+          <option value="101">101 Message Bank</option>
+          <option value="0418707307">Deliver a "Phone Not Responding" announcement (No Message)</option>
+          <option value="0418707310">Deliver a Busy Tone (No Message)</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="twelve columns">
+      <label for="ringTimeLbl">Ring Duration (secs)</label>
+      <select class="u-full-width" id="ringTimeCbx">
+          <option value="30">30</option>
+          <option value="25">25</option>
+          <option value="20">20</option>
+          <option value="15">15</option>
+          <option value="10">10</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="twelve columns">
+      <label for="forwardLbl" id="forwardLbl">Firstly, restore telstra defaults:</label>
+      <input class="button-primary" style="width:100%;" type="submit" value="Reset To Telstra Defaults" id="reset" >
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="twelve columns">
+      <label for="forwardLbl" id="forwardLbl">Finally, send above configuration for each unanswered case:</label>
+      <input class="button-primary" style="width:100%;" type="submit" value="Case #1 No Answer" id="c1">
+      <input class="button-primary" style="width:100%;" type="submit" value="Case #2 Phone Unreachable" id="c2">
+      <input class="button-primary" style="width:100%;" type="submit" value="Case #3 Phone Busy" id="c3">
+    </div>
+  </div>
+</div>
+
+ <!--
+    [MessageBank/Alternatives]
+        - Message Bank
+        - Message To Text
+        - Just Lady Saying Unavailable (No Message)
+        - Just Busy Tone (No Message)
+    [Ring Time]
+        - 10
+        - 15
+        - 20
+        - 25
+        - 30
+    ----------------
+    [Reset To Defaults] 
+    [Set For No Answer (Ring Out) Case]
+    [Set For Busy Case]
+    [Set For Unreachable Case]
+-->
+
+<script type="text/javascript">
+function removePrimary(btn) {
+    btn.removeClass("button-primary");
+    btn.addClass("button");
+}
+function addPrimary(btn) {
+    btn.removeClass("button");
+    btn.addClass("button-primary");
+}
+
+function resetPrimary() {
+    addPrimary($("#c1"));
+    addPrimary($("#c2"));
+    addPrimary($("#c3"));
+}
+
+//
+// Drop Downs Change Reset UI
+//
+$("#forwardToCbx").change(resetPrimary);
+$("#ringTimeCbx").change(resetPrimary);
+
+//
+// Reset Click
+//
+$("#reset").click(function() {
+    removePrimary($("#reset"));
+    window.location.href = "tel:"+encodeURIComponent("##002#");
+});
+
+//
+// Set call time and forwarding for each unanswered case.
+//
+$("#c1").click(function() {
+    removePrimary($("#c1"));
+    var number = $("#forwardToCbx").val();
+    var secs = $("#ringTimeCbx").val();
+    window.location.href = "tel:"+encodeURIComponent("**61*"+number+"**"+secs+"#");
+});
+$("#c2").click(function() {
+    removePrimary($("#c2"));
+    var number = $("#forwardToCbx").val();
+    window.location.href ="tel:"+encodeURIComponent("**62*"+number+"#");
+});
+$("#c3").click(function() {
+    removePrimary($("#c3"));
+    var number = $("#forwardToCbx").val();
+    window.location.href = "tel:"+encodeURIComponent("**67*"+number+"#");
+});
+
+</script>
+</body>
+
+</html>
